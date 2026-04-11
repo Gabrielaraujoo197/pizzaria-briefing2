@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quattro Amici — Briefing Rápido</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #111;
+    color: #ddd;
+    font-family: 'Barlow', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+  }
+
+  /* HERO */
+  .hero {
+    background: #1a1a1a;
+    border-bottom: 1px solid #222;
+    padding: 48px 24px 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '4';
+    position: absolute;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 320px;
+    color: rgba(244,99,30,0.05);
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    pointer-events: none;
+    line-height: 1;
+  }
+  .hero-tag {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 5px;
+    text-transform: uppercase;
+    color: #F4631E;
+    margin-bottom: 14px;
+    position: relative;
+  }
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(42px, 10vw, 76px);
+    color: #fff;
+    letter-spacing: 4px;
+    line-height: 1;
+    position: relative;
+  }
+  .hero h1 span { color: #F4631E; }
+  .hero-desc {
+    font-size: 13px;
+    color: #666;
+    margin-top: 14px;
+    position: relative;
+    max-width: 380px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+  }
+
+  /* FORM */
+  .form-wrap {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 48px 24px 80px;
+  }
+
+  /* COUNTER */
+  .counter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 44px;
+  }
+  .counter-line { flex: 1; height: 1px; background: #222; }
+  .counter-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #444;
+  }
+
+  /* FIELD */
+  .field { margin-bottom: 32px; }
+
+  .field-label {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 12px;
+  }
+
+  .q-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 28px;
+    color: rgba(244,99,30,0.3);
+    line-height: 1;
+    flex-shrink: 0;
+    width: 28px;
+  }
+
+  .q-text {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #e0e0e0;
+    line-height: 1.3;
+  }
+
+  .q-hint {
+    font-size: 12px;
+    color: #555;
+    margin-top: 4px;
+    font-style: italic;
+    padding-left: 38px;
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    background: #1a1a1a;
+    border: 1px solid #252525;
+    border-radius: 3px;
+    color: #ddd;
+    font-family: 'Barlow', sans-serif;
+    font-size: 14px;
+    font-weight: 300;
+    padding: 13px 16px;
+    outline: none;
+    transition: border-color 0.2s;
+    -webkit-appearance: none;
+  }
+  input[type="text"]:focus,
+  textarea:focus {
+    border-color: #F4631E;
+    background: #1e1e1e;
+  }
+  textarea { resize: vertical; min-height: 80px; }
+
+  /* OPTIONS */
+  .opts {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+  .opts.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+  .opts.cols1 { grid-template-columns: 1fr; }
+
+  .opt { position: relative; }
+  .opt input { position: absolute; opacity: 0; pointer-events: none; }
+  .opt label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px 14px;
+    background: #1a1a1a;
+    border: 1px solid #252525;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #999;
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+  .opt label::before {
+    content: '';
+    width: 14px; height: 14px;
+    border: 1px solid #333;
+    border-radius: 2px;
+    flex-shrink: 0;
+    transition: all 0.15s;
+  }
+  .opt input[type="radio"] + label::before { border-radius: 50%; }
+  .opt input:checked + label {
+    border-color: #F4631E;
+    color: #fff;
+    background: rgba(244,99,30,0.07);
+  }
+  .opt input:checked + label::before {
+    background: #F4631E;
+    border-color: #F4631E;
+  }
+  .opt label:hover { border-color: #333; color: #bbb; }
+
+  /* DIVIDER */
+  .divider {
+    border: none;
+    border-top: 1px solid #1d1d1d;
+    margin: 40px 0;
+    position: relative;
+  }
+  .divider::after {
+    content: attr(data-label);
+    position: absolute;
+    top: -9px;
+    left: 0;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #333;
+    background: #111;
+    padding-right: 12px;
+  }
+
+  /* SUBMIT */
+  .submit-area {
+    margin-top: 50px;
+    text-align: center;
+    padding: 36px 28px;
+    background: #1a1a1a;
+    border: 1px solid #222;
+    border-radius: 4px;
+  }
+  .submit-area p {
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 24px;
+    line-height: 1.6;
+  }
+  .btn-main {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    background: #F4631E;
+    color: #fff;
+    border: none;
+    padding: 15px 36px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    letter-spacing: 3px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-main:hover { background: #e0551a; transform: translateY(-1px); }
+  .btn-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    border: 1px solid #2a2a2a;
+    color: #555;
+    padding: 10px 20px;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+    margin-top: 12px;
+  }
+  .btn-copy:hover { border-color: #F4631E; color: #F4631E; }
+
+  /* SUCCESS */
+  .success { display: none; text-align: center; padding: 60px 24px; }
+  .success .icon { font-size: 56px; margin-bottom: 20px; }
+  .success h2 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 32px;
+    letter-spacing: 3px;
+    color: #F4631E;
+    margin-bottom: 10px;
+  }
+  .success p { font-size: 14px; color: #666; line-height: 1.7; }
+
+  .footer {
+    text-align: center;
+    padding: 28px;
+    border-top: 1px solid #1a1a1a;
+    font-family: 'Barlow Condensed', sans-serif;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #333;
+  }
+
+  @media (max-width: 480px) {
+    .opts { grid-template-columns: 1fr; }
+    .opts.cols3 { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-tag">Briefing de Marca · Rápido</div>
+  <h1>QUATTRO <span>AMICI</span></h1>
+  <p class="hero-desc">10 perguntas essenciais. Sem enrolação. Suas respostas definem tudo.</p>
+</div>
+
+<div class="form-wrap">
+  <form id="form" onsubmit="handleSubmit(event)" action="https://formspree.io/f/mbdpnbnl" method="POST">
+
+    <div class="counter">
+      <div class="counter-line"></div>
+      <div class="counter-text">10 perguntas · ~5 minutos</div>
+      <div class="counter-line"></div>
+    </div>
+
+    <!-- Q1 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">1</div>
+        <div class="q-text">Qual é a história por trás do nome Quattro Amici?</div>
+      </div>
+      <div class="q-hint">Os quatro amigos são reais? Como surgiu a ideia?</div>
+      <br>
+      <textarea name="historia" placeholder="Pode ser curto. A história real vale mais do que uma resposta perfeita..."></textarea>
+    </div>
+
+    <hr class="divider" data-label="O Produto">
+
+    <!-- Q2 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">2</div>
+        <div class="q-text">Qual será o estilo principal da pizza?</div>
+      </div>
+      <div class="opts">
+        <div class="opt">
+          <input type="radio" name="estilo_pizza" id="napolitana" value="Napolitana (massa fina, borda alta)">
+          <label for="napolitana">🍕 Napolitana</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="estilo_pizza" id="brasileira" value="Brasileira (massa grossa, recheio generoso)">
+          <label for="brasileira">🇧🇷 Brasileira</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="estilo_pizza" id="romana" value="Romana (fina e crocante)">
+          <label for="romana">🇮🇹 Romana</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="estilo_pizza" id="mista" value="Mista / os dois estilos">
+          <label for="mista">✌️ Mista</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q3 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">3</div>
+        <div class="q-text">Tem algum ingrediente ou receita que será o seu diferencial?</div>
+      </div>
+      <div class="q-hint">Algo que nenhuma outra pizzaria do Riacho Fundo tem.</div>
+      <br>
+      <input type="text" name="diferencial" placeholder="Ex: molho artesanal próprio, massa de fermentação lenta, queijo importado...">
+    </div>
+
+    <hr class="divider" data-label="O Cliente">
+
+    <!-- Q4 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">4</div>
+        <div class="q-text">Quem é o seu cliente ideal?</div>
+      </div>
+      <div class="opts">
+        <div class="opt">
+          <input type="checkbox" name="cliente" id="familias" value="Famílias com filhos">
+          <label for="familias">👨‍👩‍👧 Famílias</label>
+        </div>
+        <div class="opt">
+          <input type="checkbox" name="cliente" id="jovens" value="Jovens e casais">
+          <label for="jovens">👫 Jovens / casais</label>
+        </div>
+        <div class="opt">
+          <input type="checkbox" name="cliente" id="trabalhadores" value="Trabalhadores do bairro">
+          <label for="trabalhadores">💼 Trabalhadores</label>
+        </div>
+        <div class="opt">
+          <input type="checkbox" name="cliente" id="delivery_pub" value="Quem pede delivery em casa">
+          <label for="delivery_pub">📱 Delivery em casa</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">5</div>
+        <div class="q-text">O que você quer que o cliente sinta ao ver sua marca?</div>
+      </div>
+      <div class="opts cols3">
+        <div class="opt">
+          <input type="radio" name="sentimento" id="aconchego" value="Aconchego / tradição">
+          <label for="aconchego">🏡 Aconchego</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="sentimento" id="moderno_s" value="Modernidade / agilidade">
+          <label for="moderno_s">⚡ Modernidade</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="sentimento" id="sofisticado_s" value="Sofisticação / qualidade">
+          <label for="sofisticado_s">💎 Sofisticação</label>
+        </div>
+      </div>
+    </div>
+
+    <hr class="divider" data-label="A Marca">
+
+    <!-- Q6 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">6</div>
+        <div class="q-text">Descreva o Quattro Amici em 3 palavras.</div>
+      </div>
+      <div class="q-hint">Não pense muito. A primeira resposta é sempre a mais verdadeira.</div>
+      <br>
+      <input type="text" name="tres_palavras" placeholder="Ex: quente, honesto, família">
+    </div>
+
+    <!-- Q7 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">7</div>
+        <div class="q-text">Tem alguma cor que você definitivamente não quer na marca?</div>
+      </div>
+      <input type="text" name="cor_nao" placeholder="Ex: nada de rosa, sem roxo, não gosto de cores muito claras...">
+    </div>
+
+    <!-- Q8 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">8</div>
+        <div class="q-text">Tem alguma marca (de qualquer área) cujo visual você admira?</div>
+      </div>
+      <div class="q-hint">Restaurante, roupa, app, banco — qualquer segmento vale.</div>
+      <br>
+      <input type="text" name="referencia_visual" placeholder="Ex: gosto do logo da Rappi, do visual do Outback, da identidade da Nike...">
+    </div>
+
+    <hr class="divider" data-label="O Negócio">
+
+    <!-- Q9 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">9</div>
+        <div class="q-text">Qual o preço médio que o cliente vai pagar por pizza no salão?</div>
+      </div>
+      <div class="opts">
+        <div class="opt">
+          <input type="radio" name="ticket" id="t1" value="Até R$ 40">
+          <label for="t1">Até R$ 40</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="ticket" id="t2" value="R$ 40 a R$ 60">
+          <label for="t2">R$ 40 a R$ 60</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="ticket" id="t3" value="R$ 60 a R$ 90">
+          <label for="t3">R$ 60 a R$ 90</label>
+        </div>
+        <div class="opt">
+          <input type="radio" name="ticket" id="t4" value="Acima de R$ 90">
+          <label for="t4">Acima de R$ 90</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q10 -->
+    <div class="field">
+      <div class="field-label">
+        <div class="q-num">10</div>
+        <div class="q-text">Em 2 anos, onde você quer que o Quattro Amici esteja?</div>
+      </div>
+      <div class="q-hint">Sonho livre. Pode ser grande ou pequeno — o importante é ser real.</div>
+      <br>
+      <textarea name="visao" placeholder="Ex: quero ser referência no Riacho Fundo, abrir uma segunda unidade, virar franquia..."></textarea>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-area">
+      <p>Suas respostas serão salvas automaticamente<br>e copiadas para você colar onde quiser.</p>
+      <button type="submit" class="btn-main" id="btnSubmit">ENVIAR →</button>
+      <br>
+      <button type="button" class="btn-copy" onclick="copyAnswers()">📋 Só copiar as respostas</button>
+    </div>
+
+  </form>
+
+  <div class="success" id="success">
+    <div class="icon">🍕</div>
+    <h2>ENVIADO!</h2>
+    <p>Respostas copiadas.<br>Cole em qualquer lugar e me mande para<br>eu criar a identidade visual.</p>
+    <button type="button" class="btn-copy" onclick="copyAnswers()" style="margin-top:20px;">📋 Copiar novamente</button>
+  </div>
+</div>
+
+<div class="footer">Quattro Amici Pizzaria · Briefing de Marca · Brasília DF</div>
+
+<script>
+  function collectAnswers() {
+    const fd = new FormData(document.getElementById('form'));
+    const multi = {};
+
+    // collect checkboxes
+    ['cliente'].forEach(k => { multi[k] = []; });
+    for (const [k, v] of fd.entries()) {
+      if (k in multi) multi[k].push(v);
+    }
+
+    const qs = [
+      { n: '1', label: 'História do nome / dos sócios', key: 'historia' },
+      { n: '2', label: 'Estilo da pizza', key: 'estilo_pizza' },
+      { n: '3', label: 'Diferencial do produto', key: 'diferencial' },
+      { n: '4', label: 'Cliente ideal', key: 'cliente', multi: true },
+      { n: '5', label: 'Sentimento que a marca deve transmitir', key: 'sentimento' },
+      { n: '6', label: '3 palavras que definem a marca', key: 'tres_palavras' },
+      { n: '7', label: 'Cor que não quer na marca', key: 'cor_nao' },
+      { n: '8', label: 'Referência visual que admira', key: 'referencia_visual' },
+      { n: '9', label: 'Ticket médio no salão', key: 'ticket' },
+      { n: '10', label: 'Visão para 2 anos', key: 'visao' },
+    ];
+
+    const lines = ['=== BRIEFING QUATTRO AMICI ===', ''];
+    qs.forEach(q => {
+      const val = q.multi ? multi[q.key].join(', ') : fd.get(q.key);
+      lines.push(`[${q.n}] ${q.label}`);
+      lines.push(val && val.trim() ? val.trim() : '(não respondido)');
+      lines.push('');
+    });
+    lines.push('==============================');
+    return lines.join('\n');
+  }
+
+  function copyAnswers() {
+    const text = collectAnswers();
+    const copy = () => {
+      document.querySelectorAll('.btn-copy').forEach(b => {
+        const orig = b.textContent;
+        b.textContent = '✅ Copiado!';
+        b.style.color = '#4ade80';
+        b.style.borderColor = '#4ade80';
+        setTimeout(() => {
+          b.textContent = orig;
+          b.style.color = '';
+          b.style.borderColor = '';
+        }, 2500);
+      });
+    };
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(text).then(copy);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      ta.style.cssText = 'position:fixed;opacity:0';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      copy();
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const btn = document.getElementById('btnSubmit');
+    btn.textContent = 'ENVIANDO...';
+    btn.disabled = true;
+    btn.style.opacity = '0.6';
+
+    // Build flat payload for Formspree
+    const fd = new FormData(document.getElementById('form'));
+    const multi = { cliente: [] };
+    const payload = {};
+    for (const [k, v] of fd.entries()) {
+      if (k in multi) { multi[k].push(v); }
+      else { payload[k] = v; }
+    }
+    payload['cliente'] = multi.cliente.join(', ');
+
+    try {
+      const res = await fetch('https://formspree.io/f/mbdpnbnl', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (res.ok) {
+        copyAnswers();
+        document.getElementById('form').style.display = 'none';
+        document.getElementById('success').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        btn.textContent = 'ERRO — TENTE NOVAMENTE';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.style.background = '#c0392b';
+      }
+    } catch (err) {
+      btn.textContent = 'ERRO — TENTE NOVAMENTE';
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.style.background = '#c0392b';
+    }
+  }
+</script>
+</body>
+</html>
